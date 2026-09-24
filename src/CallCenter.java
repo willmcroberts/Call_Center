@@ -9,32 +9,34 @@ import java.util.concurrent.locks.ReentrantLock;
 public class CallCenter {
     public final static int totalCustomers = 20;
     public final static int totalAgents = 2;
-    private final static Queue<Integer> queue = new LinkedList<>(); // Shared data
-    private final static ReentrantLock qLock = new ReentrantLock();
-    private final static Condition queueNotEmpty = qLock.newCondition();
+    private final static Queue<Integer> greeterQueue = new LinkedList<>();
+    private final static Queue<Integer> agentQueue = new LinkedList<>(); // Shared data
+    private final static ReentrantLock aLock = new ReentrantLock();
+    private final static ReentrantLock gLock = new ReentrantLock();
+    private final static Condition queueNotEmpty = aLock.newCondition();
 
     public static void addCall(int customerID) {
-        qLock.lock();
+        aLock.lock();
         try {
             // Critical section
-            queue.add(customerID);
+            agentQueue.add(customerID);
             queueNotEmpty.signal();
         } finally {
-            qLock.unlock();
+            aLock.unlock();
         }
     }
 
     public static int takeCall() throws InterruptedException {
         int customerID;
-        qLock.lock();
+        aLock.lock();
         try {
-            while (queue.isEmpty()) {
+            while (agentQueue.isEmpty()) {
                 // await() releases the qLock and puts the thread to sleep.
                 queueNotEmpty.await();
             }
-            customerID = queue.remove();
+            customerID = agentQueue.remove();
         } finally {
-            qLock.unlock();
+            aLock.unlock();
         }
         return customerID;
     }
