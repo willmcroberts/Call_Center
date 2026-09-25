@@ -14,7 +14,7 @@ public class Agent implements Runnable {
                 int customerID = CallCenter.takeCall();
                 System.out.println("Agent " + ID + " starts serving customer " + customerID);
                 // Simulate spending time serving a customer
-                Thread.sleep(ThreadLocalRandom.current().nextInt(20, 200));
+                Thread.sleep(ThreadLocalRandom.current().nextInt(50, 500));
                 System.out.println("Agent " + ID + " finished serving customer " + customerID);
             } catch (Exception e) {
                 e.printStackTrace();

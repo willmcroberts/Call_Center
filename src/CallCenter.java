@@ -7,8 +7,9 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CallCenter {
-    public final static int totalCustomers = 20;
-    public final static int totalAgents = 2;
+    public final static int totalCustomers = 30;
+    public final static int totalAgents = 3;
+    public final static int totalGreeters = 1;
     private final static Queue<Integer> greeterQueue = new LinkedList<>(); //Shared data
     private final static Queue<Integer> agentQueue = new LinkedList<>(); // Shared data
     private final static ReentrantLock agentLock = new ReentrantLock();
@@ -31,7 +32,7 @@ public class CallCenter {
         agentLock.lock();
         try {
             while (agentQueue.isEmpty()) {
-                // await() releases the qLock and puts the thread to sleep.
+                // await() releases the agentLock and puts the thread to sleep.
                 queueNotEmpty.await();
             }
             customerID = agentQueue.remove();
