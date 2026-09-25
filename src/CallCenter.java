@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class CallCenter {
     public final static int totalCustomers = 20;
     public final static int totalAgents = 2;
-    private final static Queue<Integer> greeterQueue = new LinkedList<>();
+    private final static Queue<Integer> greeterQueue = new LinkedList<>(); //Shared data
     private final static Queue<Integer> agentQueue = new LinkedList<>(); // Shared data
     private final static ReentrantLock aLock = new ReentrantLock();
     private final static ReentrantLock gLock = new ReentrantLock();
